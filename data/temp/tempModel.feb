@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<febio_spec version="3.0">
+    <!--Created using GIBBON, 09-Jun-2021 14:20:31-->
+    <Module type="fluid-FSI"/>
+    <Control>
+        <analysis>Dynamic</analysis>
+        <time_steps>1550</time_steps>
+        <step_size>1.0000000e-03</step_size>
+        <solver>
+            <max_refs>5</max_refs>
+            <max_ups>50</max_ups>
+            <diverge_reform>0</diverge_reform>
+            <reform_each_time_step>0</reform_each_time_step>
+            <dtol>1.0000000e-03</dtol>
+            <etol>1.0000000e-02</etol>
+            <rtol>1.0000000e-03</rtol>
+            <lstol>9.0000000e-01</lstol>
+            <lsmin>1.0000000e-02</lsmin>
+            <lsiter>5</lsiter>
+            <min_residual>1.0000000e-16</min_residual>
+            <optimize_bw>0</optimize_bw>
+            <qnmethod>BROYDEN</qnmethod>
+            <cmax>100000</cmax>
+            <vtol>1.0000000e-03</vtol>
+            <ftol>1.0000000e-03</ftol>
+            <max_residual>10000000000</max_residual>
+            <rhoi>0</rhoi>
+            <symmetric_stiffness>0</symmetric_stiffness>
+        </solver>
+        <time_stepper>
+            <dtmin>1.0000000e-04</dtmin>
+            <dtmax>1.0000000e-03</dtmax>
+            <max_retries>9</max_retries>
+            <opt_iter>53</opt_iter>
+        </time_stepper>
+        <plot_level>PLOT_MAJOR_ITRS</plot_level>
+        <plot_range>0, -1</plot_range>
+        <plot_stride>1</plot_stride>
+        <plot_zero_state>0</plot_zero_state>
+        <output_level>OUTPUT_MAJOR_ITRS</output_level>
+    </Control>
+    <Globals>
+        <Constants>
+            <T>0</T>
+            <R>0</R>
+            <Fc>0</Fc>
+        </Constants>
+    </Globals>
+    <Material>
+        <material id="1" name="artery-wall" type="neo-Hookean">
+            <E>11700</E>
+            <v>3.0000000e-01</v>
+            <density>1000</density>
+        </material>
+        <material id="2" name="blood" type="fluid-FSI">
+            <fluid type="fluid">
+                <density>1060</density>
+                <k>2200000000</k>
+                <viscous type="Carreau">
+                    <mu0>5.6000000e-02</mu0>
+                    <mui>3.4500000e-03</mui>
+                    <lambda>3.3130000e+00</lambda>
+                    <n>3.5680000e-01</n>
+                </viscous>
+            </fluid>
+        </material>
+    </Material>
+    <Mesh>
+        <Nodes name="nodes"/>
+        <Elements name="fluid" type="tet4"/>
+        <Elements name="solid" type="tet4"/>
+        <Surface name="inlet-solid"/>
+        <Surface name="inlet-fluid"/>
+        <Surface name="outlet-solid"/>
+        <Surface name="outlet-fluid"/>
+        <Surface name="FSIInterface"/>
+    </Mesh>
+    <MeshDomains>
+        <SolidDomain mat="artery-wall" name="solid"/>
+        <SolidDomain mat="blood" name="fluid"/>
+    </MeshDomains>
+    <Output>
+        <plotfile type="febio">
+            <var type="displacement"/>
+            <var type="stress"/>
+            <var type="relative volume"/>
+            <var type="reaction forces"/>
+            <var type="contact pressure"/>
+        </plotfile>
+    </Output>
+</febio_spec>
